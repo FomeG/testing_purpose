@@ -1,14 +1,730 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Đây là web nghĩa</h1>
-    <h1>Đây là web nghĩa</h1>
-    <h1>Đây là web nghĩa</h1>
+    <title>Movie Streaming Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/locomotive-scroll/4.1.4/locomotive-scroll.min.css">
+
+    <style>
+        span {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        :root {
+            --primary-color: #e31414;
+            --dark-bg: #141414;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+            z-index: 1000;
+            transition: background 0.3s ease;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .auth-buttons button {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .sign-up {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .sign-up:hover {
+            background-color: #ff1616;
+            transform: translateY(-2px);
+        }
+
+        .sign-in {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+
+        .sign-in:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.1) 100%),
+                url('https://vcdn1-giaitri.vnecdn.net/2022/05/12/doctor-strange-2.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=wJ222WrUVceW0oQR8-Pbhw') center/cover;
+            display: flex;
+            align-items: center;
+            padding: 5% 5%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to top, var(--dark-bg) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: 2rem;
+            letter-spacing: 28px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 10;
+        }
+
+        .movie-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 2rem 0;
+            max-width: 100%;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            color: rgba(255, 255, 255, 0.9);
+            text-align: justify;
+        }
+
+        .similar-section {
+            padding: 4rem 5%;
+            background-color: var(--dark-bg);
+            position: relative;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-button {
+            padding: 1rem 2.5rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .watch-now {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .watch-now:hover {
+            background-color: #ff1616;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(227, 20, 20, 0.3);
+        }
+
+        .more-info {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(5px);
+        }
+
+        .more-info:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .movie-info {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .movie-info span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            white-space: nowrap;
+        }
+
+        .rating {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .movie-card {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            aspect-ratio: 2/3;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .movie-card-info {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+        }
+
+        .movie-card-info h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .search-bar {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            width: 250px;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            width: 300px;
+        }
+
+        .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .view-more {
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .view-more:hover {
+            transform: translateX(5px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero {
+                padding-top: 100px;
+            }
+
+            .movie-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                padding: 1rem;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .auth-buttons {
+                gap: 0.5rem;
+            }
+
+            .search-bar {
+                display: none;
+            }
+
+            .hero-content {
+                text-align: center;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .movie-info {
+                justify-content: center;
+            }
+
+            .section-title {
+                justify-content: center;
+                text-align: center;
+            }
+
+            .section-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-button {
+                width: 100%;
+                text-align: center;
+            }
+
+            .movie-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 1rem;
+            }
+
+            .movie-card-info h4 {
+                font-size: 1rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        .theloai {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 10;
+        }
+
+
+        [data-scroll-container] {
+            perspective: 1px;
+            transform-style: preserve-3d;
+        }
+
+        .smooth-scroll {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+
+        .scroll-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            will-change: transform;
+        }
+
+        /* Style cho scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .scroll-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-dot.active {
+            background-color: var(--primary-color);
+            transform: scale(1.5);
+        }
+
+        /* Thêm animation cho các section */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+
+        .fade-in.is-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Thêm data attribute cho smooth scroll -->
+    <div data-scroll-container>
+        <div class="scroll-content">
+            <nav class="navbar">
+                <a href="#" class="logo">LOGO.</a>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-links">
+                    <a href="#">Đặt vé xem phim</a>
+                    <a href="#">Tìm rạp</a>
+                    <a href="#">Phim</a>
+                    <a href="#">Giá vé</a>
+                    <a href="#">Thành viên</a>
+                </div>
+                <div class="auth-buttons">
+                    <input type="search" placeholder="Tìm kiếm phim..." class="search-bar">
+                    <button class="sign-in">Đăng ký</button>
+                    <button class="sign-up">Đăng nhập</button>
+                </div>
+            </nav>
+
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">DOCTOR</h1>
+                    <h2 class="hero-subtitle">STRANGE</h2>
+                    <p class="movie-description">
+                        Doctor Strange kể về hành trình của Dr. Stephen Strange, một bác sĩ phẫu thuật tài ba nhưng kiêu
+                        ngạo,
+                        cuộc sống của anh bị thay đổi hoàn toàn sau một tai nạn xe hơi đau khốc. Tìm kiếm phương pháp
+                        chữa trị,
+                        anh khám phá thế giới huyền bí của phép thuật và học cách sử dụng ma thuật để bảo vệ vũ trụ khỏi
+                        các thế
+                        lực đen tối. Đối mặt với những kẻ thù mạnh mẽ và những con quái vật siêu nhiên, Strange phải
+                        vượt qua
+                        những khó khăn nội tâm để trở thành người bảo vệ trái đất khỏi những mối đe dọa siêu nhiên.
+                    </p>
+                    <div class="hero-buttons">
+                        <button class="hero-button watch-now">Đặt vé ngay</button>
+                        <button class="hero-button more-info">Thông tin chi tiết</button>
+                    </div>
+                    <div class="movie-info">
+                        <span>2020</span>
+                        <span class="rating">
+                            <i class="fas fa-star" style="color: yellow;"></i>
+                            9.8
+                        </span>
+                        |
+                        <span class="theloai">Hành động</span>
+                        <span class="theloai">Phiêu lưu</span>
+                        <span class="theloai">Viễn tưởng</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="similar-section">
+                <h3 class="section-title">
+                    Có thể bạn cũng quan tâm
+                    <a href="#" class="view-more">
+                        Xem thêm
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </h3>
+                <div class="movie-grid">
+                    <div class="movie-card">
+                        <img src="https://images2.thanhnien.vn/528068263637045248/2023/11/24/19a2-ol-1700844512517647758583.jpg"
+                            alt="Movie poster">
+                        <div class="movie-card-info">
+                            <h4>Linh miểu</h4>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                9.2
+                            </div>
+                            <span>Kinh dị</span>
+                        </div>
+                    </div>
+                    <div class="movie-card">
+                        <img src="https://images2.thanhnien.vn/528068263637045248/2023/11/24/19a2-ol-1700844512517647758583.jpg"
+                            alt="Movie poster">
+                        <div class="movie-card-info">
+                            <h4>Linh miểu</h4>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                9.2
+                            </div>
+                            <span>Kinh dị</span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </section>
+
+
+        </div>
+    </div>
+
+
+
+
+    <!-- Thêm scroll indicator -->
+    <div class="scroll-indicator">
+        <div class="scroll-dot active" data-section="hero"></div>
+        <div class="scroll-dot" data-section="similar"></div>
+    </div>
+
+    <!-- Thêm Locomotive Scroll JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/locomotive-scroll/4.1.4/locomotive-scroll.min.js"></script>
+
+    <script>
+        // Add navbar background on scroll
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(0,0,0,0.9)';
+            } else {
+                navbar.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%)';
+            }
+        });
+
+        // Enhanced button hover effects
+        const buttons = document.querySelectorAll('.hero-button');
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', function () {
+                this.style.transform = 'scale(1.05) translateY(-2px)';
+            });
+            button.addEventListener('mouseleave', function () {
+                this.style.transform = 'scale(1) translateY(0)';
+            });
+        });
+
+        // Khởi tạo Locomotive Scroll
+        const scroll = new LocomotiveScroll({
+            el: document.querySelector('[data-scroll-container]'),
+            smooth: true,
+            smoothMobile: true,
+            lerp: 0.05, // Tốc độ scroll (0-1)
+            multiplier: 1.5, // Độ nhạy của scroll
+            getDirection: true,
+            getSpeed: true,
+            smartphone: {
+                smooth: true
+            },
+            tablet: {
+                smooth: true
+            }
+        });
+
+        // Xử lý scroll indicator
+        const sections = document.querySelectorAll('section');
+        const dots = document.querySelectorAll('.scroll-dot');
+
+        scroll.on('scroll', (obj) => {
+            // Cập nhật active dot
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    dots[index].classList.add('active');
+                }
+            });
+
+            // Xử lý parallax và fade-in elements
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(el => {
+                if (el.getBoundingClientRect().top <= window.innerHeight * 0.8) {
+                    el.classList.add('is-revealed');
+                }
+            });
+        });
+
+        // Click vào dot để scroll đến section tương ứng
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                scroll.scrollTo(sections[index]);
+            });
+        });
+
+        // Xử lý navbar background
+        scroll.on('scroll', (obj) => {
+            const navbar = document.querySelector('.navbar');
+            if (obj.scroll.y > 50) {
+                navbar.style.background = 'rgba(0,0,0,0.9)';
+            } else {
+                navbar.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%)';
+            }
+        });
+
+        // Thêm smooth scroll cho các link trong navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    scroll.scrollTo(target);
+                }
+            });
+        });
+
+        // Update scroll sau khi window resize
+        window.addEventListener('resize', () => {
+            scroll.update();
+        });
+
+        // Mobile menu
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Optional: Thêm scroll-triggered animations
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(el => {
+                if (el.getBoundingClientRect().top <= window.innerHeight * 0.8) {
+                    el.classList.add('is-revealed');
+                }
+            });
+        };
+
+        // Gọi animation khi page load
+        window.addEventListener('load', animateOnScroll);
+    </script>
 </body>
+
 </html>
